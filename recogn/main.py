@@ -1,3 +1,6 @@
+# args : -s=1 -d=1 -m=save
+
+import detect_blinks
 from cv2 import waitKey
 from argparse import ArgumentParser
 from threading import Thread
@@ -114,8 +117,10 @@ def proccess(cam: Camera, mode: str, showCam: bool) -> None:
         # Detect faces
         frame, faces = cam.detectFaces(frame)
 
+        detect_blinks.DetectBlink(frame)
+
         # Recognize face and print if changed
-        ret, name, txt = cam.recognizeFace(faces)
+        ret, name, txt = cam.recognizeFace(faces, frame)
         if txt != info:
             info = txt
             print(info)

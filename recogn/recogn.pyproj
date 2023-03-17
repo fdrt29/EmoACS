@@ -15,6 +15,8 @@
     <CommandLineArguments>-s=1 -d=1 -m=save</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <Name>recogn</Name>
+    <InterpreterPath>
+    </InterpreterPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -22,10 +24,20 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="faces\elon.png" />
+    <Content Include="faces\federico.png" />
+    <Content Include="Model\dlib_face_recognition_resnet_model_v1.dat" />
     <Content Include="requirements.txt" />
+    <Content Include="Model\shape_predictor_68_face_landmarks.dat" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="camera.py" />
+    <Compile Include="detect_blinks.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="alter-recogn-example\main.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="logger.py" />
     <Compile Include="main.py" />
     <Compile Include="windowManager.py" />
@@ -40,6 +52,11 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="faces\" />
+    <Folder Include="Model\" />
+    <Folder Include="alter-recogn-example\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>

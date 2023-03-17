@@ -30,7 +30,7 @@ class Camera(object):
     datasetSize = 30
     imgSize = (150, 150)
 
-    confidence = (65, 100) # TODO empirical. old (30, 90)
+    confidence = (30, 90)#(65, 100) # TODO empirical. old (30, 90)
 
     lastFrame = None
 
@@ -42,7 +42,7 @@ class Camera(object):
         """
         self.datasetsDir = datasetsDir
         self.idx = index
-        self.camera = cv2.VideoCapture(self.idx, cv2.CAP_DSHOW)
+        self.videsoStream = cv2.VideoCapture(self.idx, cv2.CAP_DSHOW)
         self.model = Sequential(name=f'model{index}')
         self.drawSquareFace = drawSquareFace
         if not os.path.isdir(self.datasetsDir):
@@ -64,7 +64,7 @@ class Camera(object):
         logger.saveInfo(f'Camera {self.idx}: READY')
 
     def __del__(self):
-        self.camera.release()
+        self.videsoStream.release()
 
     def loadmodel(self) -> Exception:
         """
@@ -141,7 +141,7 @@ class Camera(object):
             - int: 0 if error
             - image: frame image
         """
-        return self.camera.read()
+        return self.videsoStream.read()
 
     def saveFace(self, Name) -> str:
         """
@@ -235,7 +235,7 @@ class Camera(object):
             )
         return frame, grayFaces
 
-    def recognizeFace(self, faces):
+    def recognizeFace(self, faces, frame):
         """
         Recognizes face from frame via datasets
 
@@ -264,6 +264,9 @@ class Camera(object):
             id, conf = self.recognizer.predict(faceResized)
 
             #print(f'prob: {conf}')
+            cv2.putText(frame, f"{self.names[id]}: {conf}", (10, 400),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
 
             if conf > self.confidence[0] and conf <= self.confidence[1]:
                 userName = self.names[id]
